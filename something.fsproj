@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="src/Counter.fs" />
+        <Compile Include="src/About.fs" />
+        <Compile Include="src/Shell.fs" />
+        <Compile Include="src/Program.fs" />
+        <AvaloniaResource Include="**\*.xaml" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Desktop" Version="0.9.7" />
+        <PackageReference Include="JaggerJo.Avalonia.FuncUI" Version="0.4.0" />
+        <PackageReference Include="JaggerJo.Avalonia.FuncUI.DSL" Version="0.4.0" />
+        <PackageReference Include="JaggerJo.Avalonia.FuncUI.Elmish" Version="0.4.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove=".template.config\**" />
+    </ItemGroup>
+</Project>
