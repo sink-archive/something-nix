@@ -1,6 +1,6 @@
 // this is without a doubt the most likely to break code i have ever written
 
-namespace something.Core;
+namespace Something.Core;
 
 /// <summary>
 /// Listens for changes in a file and updates the store as necessary.
@@ -8,11 +8,14 @@ namespace something.Core;
 public class StoreListener : IDisposable
 {
 	public string RootDir => _fsWatcher.Path;
+	
+	public FileStore Store { get; }
 
 	private readonly FileSystemWatcher _fsWatcher;
 
 	public StoreListener(string dir, FileStore store)
 	{
+		Store      = store;
 		_fsWatcher = new FileSystemWatcher(dir);
 
 		_fsWatcher.IncludeSubdirectories = true;
@@ -28,14 +31,27 @@ public class StoreListener : IDisposable
 			throw new IOException("FileSystemWatcher errored, check InnerException", e.GetException());
 		};
 		
-		_fsWatcher.Created += (_, e) => store.Add(e.FullPath);
-		_fsWatcher.Deleted += (_, e) => store.Remove(e.FullPath);
+		// WOAH WHAT THIS ACTUALLY WORKS???
+		_fsWatcher.Created += (_, e) =>
+		{
+			Store.Add(e.FullPath);
+			StoreUpdateEvent.Invoke(this, e.FullPath);
+		};
+		_fsWatcher.Deleted += (_, e) =>
+		{
+			Store.Remove(e.FullPath);
+			StoreUpdateEvent.Invoke(this, e.FullPath);
+		};
 		_fsWatcher.Renamed += (_, e) =>
 		{
-			store.Remove(e.OldFullPath);
-			store.Add(e.FullPath);
+			Store.Remove(e.OldFullPath);
+			Store.Add(e.FullPath);
+			StoreUpdateEvent.Invoke(this, e.FullPath);
 		};
 	}
+
+	// ReSharper disable once MemberInitializerValueIgnored
+	public event EventHandler<string> StoreUpdateEvent = (_, _) => { };
 
 	public void Dispose() => _fsWatcher.Dispose();
 }
