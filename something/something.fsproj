@@ -6,10 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="src/Counter.fs" />
-        <Compile Include="src/About.fs" />
-        <Compile Include="src/Shell.fs" />
-        <Compile Include="src/Program.fs" />
+        <Compile Include="Counter.fs" />
+        <Compile Include="About.fs" />
+        <Compile Include="Shell.fs" />
+        <Compile Include="Program.fs" />
         <AvaloniaResource Include="**\*.xaml" />
     </ItemGroup>
     
