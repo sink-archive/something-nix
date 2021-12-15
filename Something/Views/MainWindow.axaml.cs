@@ -11,13 +11,13 @@ namespace Something.Views
 	{
 		public MainWindow()
 		{
-			DataContext = new MainWindowViewModel();
+			DataContext = new MainWindowViewModel { Scanning = true };
 			
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
-
+			
 			// this is slightly cancer, and for that i am sorry
 			// for the UI to update correctly, we need to allow one render before starting scanning.
 			// not my problem, AvaloniaUI's MVC implementation is the root cause of this.
@@ -25,11 +25,12 @@ namespace Something.Views
 			{
 				// this async delay is the secret sauce to wait for a render. It's also cancer.
 				await Task.Delay(1);
-				var listener = StoreInitializer.Initialize("/home/cain/Documents");
+				var listener = StoreInitializer.InitializeHome();
 
 				listener.StoreUpdateEvent += (_, _) => ((MainWindowViewModel) DataContext!).RaiseFileListChanged();
 
 				((MainWindowViewModel) DataContext!).FileStore = listener;
+				((MainWindowViewModel) DataContext!).Scanning  = false;
 			};
 			// don't await, just fire it off and let .NET do its thing
 			// hence the constructor exits before this function completes, and a render can occur

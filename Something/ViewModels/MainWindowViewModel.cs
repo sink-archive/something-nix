@@ -38,5 +38,13 @@ namespace Something.ViewModels
 				RaiseFileListChanged();
 			}
 		}
+
+		private bool _scanning;
+
+		public bool Scanning
+		{
+			get => _scanning;
+			set => this.RaiseAndSetIfChanged(ref _scanning, value);
+		}
 	}
 }

@@ -38,7 +38,7 @@
 			</ListBox.ItemTemplate>
 		</ListBox>
 
-		<TextBlock Grid.Row="1" Text="Currently scanning disk, please wait..." IsVisible="{Binding !SafeFiles.Length}" />
+		<TextBlock Grid.Row="1" Text="Currently scanning disk, please wait..." IsVisible="{Binding Scanning}" />
 	</Grid>
 
 </Window>
