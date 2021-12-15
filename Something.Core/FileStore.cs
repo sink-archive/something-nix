@@ -7,6 +7,8 @@ public class FileStore
 {
 	private readonly HashSet<string> _store = new();
 
+	public int Count => _store.Count;
+
 	public bool Add(string f) => _store.Add(f);
 
 	public bool Remove(string f) => _store.Remove(f);
